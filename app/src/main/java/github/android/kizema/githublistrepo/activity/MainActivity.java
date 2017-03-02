@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
@@ -17,13 +15,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import github.android.kizema.githublistrepo.Logger;
 import github.android.kizema.githublistrepo.R;
-import github.android.kizema.githublistrepo.SessionManager;
-import github.android.kizema.githublistrepo.TopicAdapter;
+import github.android.kizema.githublistrepo.adapters.RepoAdapter;
 import github.android.kizema.githublistrepo.control.Controller;
 import github.android.kizema.githublistrepo.events.RepoEvent;
-import github.android.kizema.githublistrepo.model.Repo;
+import github.android.kizema.githublistrepo.util.AppRecyclerView;
+import github.android.kizema.githublistrepo.util.SessionManager;
 
 public class MainActivity extends BaseActivity {
 
@@ -33,9 +30,13 @@ public class MainActivity extends BaseActivity {
     }
 
     @BindView(R.id.rvRepos)
-    RecyclerView rvRepos;
+    AppRecyclerView rvRepos;
 
-    private TopicAdapter topicAdapter;
+    @BindView(R.id.pbEmpty)
+    ProgressBar pbEmpty;
+
+
+    private RepoAdapter repoAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +48,12 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setupUI(){
-        topicAdapter = new TopicAdapter();
-        rvRepos.setAdapter(topicAdapter);
+        repoAdapter = new RepoAdapter();
+        rvRepos.setAdapter(repoAdapter);
         LinearLayoutManager mChatLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvRepos.setLayoutManager(mChatLayoutManager);
         rvRepos.setHasFixedSize(true);
+        rvRepos.setEmptyView(pbEmpty);
     }
 
     @Override
@@ -59,7 +61,7 @@ public class MainActivity extends BaseActivity {
         super.onResume();
         EventBus.getDefault().register(this);
 
-        Controller.getInstance().listRepos(SessionManager.getToken(), SessionManager.getUsername());
+        Controller.getInstance().listRepos(SessionManager.getToken(), SessionManager.getUsername(), getShouldGoToServer());
     }
 
     @Override
@@ -68,7 +70,6 @@ public class MainActivity extends BaseActivity {
         super.onPause();
     }
 
-    //TODO remive
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEvent(RepoEvent event) {
         if (!event.isSuccess){
@@ -76,11 +77,7 @@ public class MainActivity extends BaseActivity {
             return;
         }
 
-        for (Repo r : event.repos){
-            Log.d(Logger.TAG, r.name);
-        }
-
-        topicAdapter.update(event.repos);
+        repoAdapter.update(event.repos);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package github.android.kizema.githublistrepo;
+package github.android.kizema.githublistrepo.network;
 
 import java.util.List;
 
@@ -16,5 +16,4 @@ public interface GitHubService {
 
     @GET("authorizations")
     Call<Void> login(@Header("Authorization") String authorization);
-
 }

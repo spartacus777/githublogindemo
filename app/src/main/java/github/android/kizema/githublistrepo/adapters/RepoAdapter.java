@@ -1,4 +1,4 @@
-package github.android.kizema.githublistrepo;
+package github.android.kizema.githublistrepo.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,25 +10,21 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import github.android.kizema.githublistrepo.R;
 import github.android.kizema.githublistrepo.model.Repo;
 
-public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHolder> {
+public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder> {
 
-    private List<Repo> topics;
+    private List<Repo> repos;
 
-    public TopicAdapter(List<Repo> conferences) {
-        this.topics = conferences;
-    }
-
-    public TopicAdapter() {
-    }
+    public RepoAdapter() {}
 
     public void update(List<Repo> conferences){
-        this.topics = conferences;
+        this.repos = conferences;
         notifyDataSetChanged();
     }
 
-    public static class TopicViewHolder extends RecyclerView.ViewHolder {
+    public static class RepoViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tvName)
         TextView tvName;
@@ -39,22 +35,22 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         @BindView(R.id.tvDate)
         TextView tvDate;
 
-        public TopicViewHolder(View itemView) {
+        public RepoViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
 
     @Override
-    public TopicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RepoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View parentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
 
-        return new TopicViewHolder(parentView);
+        return new RepoViewHolder(parentView);
     }
 
     @Override
-    public void onBindViewHolder(final TopicViewHolder holder, final int position) {
-        Repo model = topics.get(position);
+    public void onBindViewHolder(final RepoViewHolder holder, final int position) {
+        Repo model = repos.get(position);
 
         holder.tvName.setText(model.name);
         holder.tvStars.setText(model.stargazersCount);
@@ -63,20 +59,20 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
 
     @Override
     public int getItemCount() {
-        if (topics == null){
+        if (repos == null){
             return 0;
         }
 
-        return topics.size();
+        return repos.size();
     }
 
     public void clear(){
-        topics.clear();
+        repos.clear();
         notifyDataSetChanged();
     }
 
     public boolean isEmpty(){
-        if (topics == null || topics.size() == 0) {
+        if (repos == null || repos.size() == 0) {
             return true;
         }
 

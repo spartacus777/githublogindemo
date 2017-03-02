@@ -1,7 +1,9 @@
-package github.android.kizema.githublistrepo;
+package github.android.kizema.githublistrepo.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import github.android.kizema.githublistrepo.App;
 
 public class SessionManager {
 

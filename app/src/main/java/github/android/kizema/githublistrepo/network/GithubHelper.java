@@ -1,4 +1,4 @@
-package github.android.kizema.githublistrepo;
+package github.android.kizema.githublistrepo.network;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

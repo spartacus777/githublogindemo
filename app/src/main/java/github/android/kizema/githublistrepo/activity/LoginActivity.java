@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -20,9 +19,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import github.android.kizema.githublistrepo.R;
-import github.android.kizema.githublistrepo.SessionManager;
 import github.android.kizema.githublistrepo.control.Controller;
 import github.android.kizema.githublistrepo.events.LoginEvent;
+import github.android.kizema.githublistrepo.util.SessionManager;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -73,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
         String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
         final String header = "Basic " + base64EncodedCredentials;
 
-        Log.d("TT", ""+header);
         Controller.getInstance().login(header, etName.getText().toString());
         progressBar.setVisibility(View.VISIBLE);
     }
