@@ -18,8 +18,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import github.android.kizema.githublistrepo.App;
 import github.android.kizema.githublistrepo.R;
-import github.android.kizema.githublistrepo.control.Controller;
 import github.android.kizema.githublistrepo.events.LoginEvent;
 import github.android.kizema.githublistrepo.util.SessionManager;
 
@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
         final String header = "Basic " + base64EncodedCredentials;
 
-        Controller.getInstance().login(header, etName.getText().toString());
+        App.getController().login(header, etName.getText().toString());
         progressBar.setVisibility(View.VISIBLE);
     }
 

@@ -16,9 +16,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import github.android.kizema.githublistrepo.App;
 import github.android.kizema.githublistrepo.R;
 import github.android.kizema.githublistrepo.adapters.RepoAdapter;
-import github.android.kizema.githublistrepo.control.Controller;
 import github.android.kizema.githublistrepo.events.RepoEvent;
 import github.android.kizema.githublistrepo.util.AppRecyclerView;
 import github.android.kizema.githublistrepo.util.SessionManager;
@@ -64,7 +64,7 @@ public class MainActivity extends BaseActivity {
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Controller.getInstance().listRepos(SessionManager.getToken(), SessionManager.getUsername(), true);
+                App.getController().listRepos(SessionManager.getToken(), SessionManager.getUsername(), true);
             }
         });
     }
@@ -74,7 +74,7 @@ public class MainActivity extends BaseActivity {
         super.onResume();
         EventBus.getDefault().register(this);
 
-        Controller.getInstance().listRepos(SessionManager.getToken(), SessionManager.getUsername(), getShouldGoToServer());
+        App.getController().listRepos(SessionManager.getToken(), SessionManager.getUsername(), getShouldGoToServer());
     }
 
     @Override

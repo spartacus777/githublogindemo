@@ -5,6 +5,8 @@ import android.content.Context;
 
 import org.greenrobot.greendao.database.Database;
 
+import github.android.kizema.githublistrepo.control.BaseController;
+import github.android.kizema.githublistrepo.control.NetworkController;
 import github.android.kizema.githublistrepo.model.DaoMaster;
 import github.android.kizema.githublistrepo.model.DaoSession;
 
@@ -33,5 +35,10 @@ public class App extends Application {
 
     public static DaoSession getDaoSession(){
         return daoSession;
+    }
+
+    public static BaseController getController(){
+        //for test purposes we can inject here TestControlled
+        return new NetworkController();
     }
 }
