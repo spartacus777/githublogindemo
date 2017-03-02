@@ -3,6 +3,7 @@ package github.android.kizema.githublistrepo.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +36,9 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.pbEmpty)
     ProgressBar pbEmpty;
 
+    @BindView(R.id.swipeLayout)
+    SwipeRefreshLayout swipeLayout;
+
 
     private RepoAdapter repoAdapter;
 
@@ -54,6 +58,15 @@ public class MainActivity extends BaseActivity {
         rvRepos.setLayoutManager(mChatLayoutManager);
         rvRepos.setHasFixedSize(true);
         rvRepos.setEmptyView(pbEmpty);
+
+        swipeLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent),
+                getResources().getColor(R.color.colorPrimary));
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Controller.getInstance().listRepos(SessionManager.getToken(), SessionManager.getUsername(), true);
+            }
+        });
     }
 
     @Override
@@ -72,6 +85,7 @@ public class MainActivity extends BaseActivity {
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEvent(RepoEvent event) {
+        swipeLayout.setRefreshing(false);
         if (!event.isSuccess){
             Toast.makeText(this, event.errorMsg, Toast.LENGTH_SHORT).show();
             return;
